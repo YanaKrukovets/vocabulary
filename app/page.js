@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-const Home = () => {
+export default function Home() {
   const router = useRouter();
 
   const handleLoginClick = () => {
@@ -15,22 +15,23 @@ const Home = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>Welcome to Our Website!</h1>
-      <button
-        onClick={handleLoginClick}
-        style={{ padding: "10px 20px", margin: "10px" }}
-      >
-        Go to Login
-      </button>
-      <button
-        onClick={handleRegisterClick}
-        style={{ padding: "10px 20px", margin: "10px" }}
-      >
-        Go to Register
-      </button>
+    <div className="gradient-background">
+      <div className="card">
+        <h1 className="title">Hello!</h1>
+        <p className="text">Welcome to our website!</p>
+        <button
+          onClick={handleLoginClick}
+          className="button"
+        >
+          Go to Login
+        </button>
+        <button
+          onClick={handleRegisterClick}
+          className="button"
+        >
+          Go to Register
+        </button>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}
