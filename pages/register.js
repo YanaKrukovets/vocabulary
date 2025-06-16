@@ -11,17 +11,34 @@ const Register = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ message: "", field: null });
   const router = useRouter();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    setError({ message: "", field: null }); // Clear error when user starts typing
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError({ message: "", field: null });
+
+    // Validate email format
+    if (!validateEmail(formData.email)) {
+      setError({ message: "Please enter a valid email address", field: "email" });
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -37,10 +54,10 @@ const Register = () => {
       if (res.ok) {
         router.push("/login");
       } else {
-        setError(data.error || "Registration failed");
+        setError({ message: data.error || "Registration failed", field: null });
       }
     } catch (err) {
-      setError("Server error");
+      setError({ message: "Server error", field: null });
     } finally {
       setLoading(false);
     }
@@ -74,8 +91,8 @@ const Register = () => {
                     onChange={handleChange}
                     className="form-input"
                     aria-required="true"
-                    aria-invalid={error ? "true" : "false"}
-                    aria-describedby={error ? "error-message" : undefined}
+                    aria-invalid={error.field === "name" ? "true" : "false"}
+                    aria-describedby={error.field === "name" ? "error-message" : undefined}
                   />
                 </div>
 
@@ -93,8 +110,10 @@ const Register = () => {
                     onChange={handleChange}
                     className="form-input"
                     aria-required="true"
-                    aria-invalid={error ? "true" : "false"}
-                    aria-describedby={error ? "error-message" : undefined}
+                    aria-invalid={error.field === "email" ? "true" : "false"}
+                    aria-describedby={error.field === "email" ? "error-message" : undefined}
+                    pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                    title="Please enter a valid email address"
                   />
                 </div>
 
@@ -112,19 +131,19 @@ const Register = () => {
                     onChange={handleChange}
                     className="form-input"
                     aria-required="true"
-                    aria-invalid={error ? "true" : "false"}
-                    aria-describedby={error ? "error-message" : undefined}
+                    aria-invalid={error.field === "password" ? "true" : "false"}
+                    aria-describedby={error.field === "password" ? "error-message" : undefined}
                   />
                 </div>
 
-                {error && (
+                {error.message && (
                   <div
                     className="error-message"
                     role="alert"
                     id="error-message"
                     aria-live="polite"
                   >
-                    <p className="error-text">{error}</p>
+                    <p className="error-text">{error.message}</p>
                   </div>
                 )}
 

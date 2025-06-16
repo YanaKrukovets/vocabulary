@@ -13,6 +13,16 @@ const Login = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setError(null);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setError(null);
+  };
+
   // Handle form submission and authentication
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -72,7 +82,7 @@ const Login = () => {
                     autoComplete="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmailChange}
                     className="form-input"
                     aria-required="true"
                     aria-invalid={error ? "true" : "false"}
@@ -91,7 +101,7 @@ const Login = () => {
                     autoComplete="current-password"
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                     className="form-input"
                     aria-required="true"
                     aria-invalid={error ? "true" : "false"}
