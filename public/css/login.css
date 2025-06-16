@@ -183,4 +183,59 @@ form {
 
 .secondary-button:hover {
   background-color: #f9fafb;
+}
+
+.vocabulary-list {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.vocabulary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.vocabulary-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vocabulary-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.vocabulary-item:last-child {
+  border-bottom: none;
+}
+
+.vocabulary-item strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.loading-container .loading-spinner {
+  margin-right: 0.75rem;
+}
+
+.no-vocabulary {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 2rem;
 } 
