@@ -6,18 +6,21 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 const Login = () => {
+  // State management for form inputs and UI states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  // Handle form submission and authentication
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      // Make API request to login endpoint
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -28,6 +31,7 @@ const Login = () => {
 
       const data = await res.json();
 
+      // Handle successful login
       if (res.ok) {
         localStorage.setItem("token", data.token);
         router.push("/user-info");
@@ -43,6 +47,7 @@ const Login = () => {
 
   return (
     <>
+      {/* Add CSS stylesheet */}
       <Head>
         <link rel="stylesheet" href="/css/login.css" />
       </Head>
@@ -94,6 +99,7 @@ const Login = () => {
                   />
                 </div>
 
+                {/* Error message display */}
                 {error && (
                   <div
                     className="error-message"
@@ -143,6 +149,7 @@ const Login = () => {
                 </button>
               </form>
 
+              {/* Divider between login and register */}
               <div className="divider">
                 <span className="divider-text">Don't have an account?</span>
               </div>

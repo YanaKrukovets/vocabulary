@@ -18,7 +18,7 @@ export default function Home() {
     <div className="gradient-background">
       <div className="card">
         <h1 className="title">Hello!</h1>
-        <p className="text">Welcome to our website!</p>
+        <p className="text">Welcome to your vocabulary!</p>
         <button
           onClick={handleLoginClick}
           className="button"
