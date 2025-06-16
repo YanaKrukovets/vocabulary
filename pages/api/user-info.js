@@ -1,6 +1,8 @@
 import connectToDatabase from "../../lib/mongodb";
 import User from "../../models/User";
 import { verifyToken } from "../../lib/auth"; // Utility to verify JWT token
+import { ObjectId } from "mongodb";
+import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -70,7 +72,40 @@ export default async function handler(req, res) {
       console.error("Error fetching vocabulary:", error);
       return res.status(500).json({ error: "Server error" });
     }
+  } else if (req.method === "DELETE") {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    try {
+      const decoded = verifyToken(token);
+      await connectToDatabase();
+
+      const { word } = req.body;
+      if (!word) {
+        return res.status(400).json({ error: "Word is required" });
+      }
+
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Remove the word from vocabulary array
+      user.vocabulary = user.vocabulary.filter(item => item.word !== word);
+      await user.save();
+
+      return res.status(200).json({ 
+        message: "Word deleted successfully",
+        vocabulary: user.vocabulary 
+      });
+    } catch (error) {
+      console.error("Error deleting word:", error);
+      return res.status(500).json({ error: "Server error" });
+    }
   } else {
-    return res.status(405).json({ error: "Method Not Allowed" });
+    res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+    res.status(405).json({ error: `Method ${req.method} not allowed` });
   }
 }
